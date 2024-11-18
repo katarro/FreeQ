@@ -1,0 +1,5 @@
+En la ruta raiz /FreeQ se deben colocar los -env para cada microservicio.
+Cada microservicio debe tener sus propios dockerfile.
+
+En el docker-compose.yml, no escribir textual las variables de entorno, sino usar
+${VARIABLE_DE_ENTORNO}

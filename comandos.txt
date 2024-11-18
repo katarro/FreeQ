@@ -1,0 +1,8 @@
+sudo docker run --name freeq_db_container  \
+    -e POSTGRES_PASSWORD=freeq123 \
+    -e POSTGRES_USER=fcastro \
+    -e POSTGRES_DB=freeq_db \
+    -p 5432:5432 \
+    -d postgres
+
+sudo docker exec -it freeq_db_container psql -U fcastro -d freeq_db
