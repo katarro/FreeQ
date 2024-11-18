@@ -7,3 +7,6 @@
 [submodule "test-ms-1"]
 	path = test-ms-1
 	url = https://github.com/katarro/test-ms-1
+[submodule "test-ms-2"]
+	path = test-ms-2
+	url = https://github.com/katarro/test-ms-2
