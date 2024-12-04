@@ -4,9 +4,9 @@
 [submodule "gateway"]
 	path = gateway
 	url = https://github.com/katarro/gateway
-[submodule "test-ms-1"]
-	path = test-ms-1
-	url = https://github.com/katarro/test-ms-1
+[submodule "branch-ms"]
+	path = branch-ms
+	url = https://github.com/katarro/branch-ms
 [submodule "test-ms-2"]
 	path = test-ms-2
 	url = https://github.com/katarro/test-ms-2
