@@ -6,3 +6,66 @@ sudo docker run --name freeq_db_container  \
     -d postgres
 
 sudo docker exec -it freeq_db_container psql -U fcastro -d freeq_db
+
+
+conexion en main del productor con kafka:
+
+import { envs } from './config/envs';
+import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+async function bootstrap() {
+  const logger = new Logger('Main Auth');
+
+  // NATS Microservice
+  const natsApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: [envs.nats_servers], // Configuración de NATS
+      },
+    },
+  );
+
+  // Kafka Microservice
+  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: ['localhost:9092'], // Kafka escucha en este puerto
+        },
+        consumer: {
+          groupId: 'nestjs-group', // Cambia este ID según lo que necesites
+        },
+      },
+    },
+  );
+
+  // Configurar pipes de validación para ambos
+  [natsApp, kafkaApp].forEach((app) =>
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    ),
+  );
+
+  // Iniciar ambos microservicios
+  await Promise.all([
+    natsApp.listen(),
+    setTimeout(async () => {
+      await kafkaApp.listen();
+      logger.log('Kafka está listo y escuchando.');
+    }, 5000), // Retraso de 5 segundos
+  ]);
+
+  logger.log(`Microservicio iniciado con NATS y Kafka`);
+}
+bootstrap();
