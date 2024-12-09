@@ -13,7 +13,6 @@ FreeQ es una aplicación diseñada para transformar colas físicas en filas virt
 ## Tecnologías utilizadas
 
 - **Backend**: NestJS, NATS, Cache-Manager, PostgreSQL
-- **Frontend**: React Native
 - **Base de datos**: PostgreSQL
 - **Autenticación**: JSON Web Tokens (JWT)
 - **Almacenamiento en caché**: Cache-Manager
