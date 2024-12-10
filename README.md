@@ -43,3 +43,8 @@ FreeQ es una aplicación diseñada para transformar colas físicas en filas virt
     ```
     docker compose up --build -d
     ```
+
+
+5. Arquitectura
+   ![image](https://github.com/user-attachments/assets/95707b27-6f0b-4828-be47-72251fa963fb)
+
