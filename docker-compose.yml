@@ -6,10 +6,9 @@ services:
       - "4222:4222"
       - "8222:8222"
     restart: unless-stopped
-
-  auth_db:
+  auth-db:
     image: postgres:latest
-    container_name: auth_db
+    container_name: auth-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,12 +16,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./auth_db:/var/lib/postgresql/data
-    # restart: unless-stopped
+      - ./auth-db:/var/lib/postgresql/data
 
-  branch_db:
+  branch-db:
     image: postgres:latest
-    container_name: branch_db
+    container_name: branch-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -30,7 +28,28 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./branch_db:/var/lib/postgresql/data
-    # restart: unless-stopped
- 
-  
+      - ./branch-db:/var/lib/postgresql/data
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats-server:4222
+
+  auth-ms:
+    build: ./auth-ms
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3001
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=postgresql://fcastro:freeq123@auth_db:5432/auth-db?schema=public
+      - JWT_SECRET='51G3m@SHDYLf]7e]y:r5F<*iR{ZxG3w!/N<10I/Aa&ADk<dsCwvY7y/eW9D<^`CJ_N879n{Y6t6G/ov6M£s}%(ZFS[#|KN>Fo:'
+
+  # branch-ms:
