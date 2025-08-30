@@ -10,6 +10,3 @@
 [submodule "test-ms-2"]
 	path = test-ms-2
 	url = https://github.com/katarro/test-ms-2
-[submodule "queue-time-ms"]
-	path = queue-time-ms
-	url = https://github.com/usuario/queue-time-ms.git
